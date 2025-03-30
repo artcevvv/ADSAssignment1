@@ -1,6 +1,5 @@
 import java.util.Scanner;
 
-// Time complexity O(n)
 
 public class p1 {
     public static void main(String[] args) {

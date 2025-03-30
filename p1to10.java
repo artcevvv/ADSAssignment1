@@ -1,3 +1,4 @@
+package adsassignment1;
 import java.util.Scanner;
 
 public class p1to10 {
@@ -22,9 +23,30 @@ public class p1to10 {
             if (choice == 0) break;
             
             switch (choice) {
-                case 1: minimum(); break;
-                case 2: avg(); break;
-                case 3: isPrime(); break;
+                case 1: 
+                    System.out.println("Enter array size:");
+                    int n = sc.nextInt();
+                    int[] array = new int[n];
+                    System.out.println("Enter " + n + " numbers:");
+                    for (int i = 0; i < n; i++) {
+                        array[i] = sc.nextInt();
+                    }
+                    System.out.println(recursiveMinimum(array, 0, Integer.MAX_VALUE)); 
+                    break;
+                case 2: 
+                    System.out.println("Enter array size:");
+                    n = sc.nextInt();
+                    array = new int[n];
+                    System.out.println("Enter " + n + " numbers:");
+                    for (int i = 0; i < n; i++) {
+                        array[i] = sc.nextInt();
+                    }
+                    System.out.println(recursiveAverage(array, 0, 0) / (float)n); 
+                    break;
+                case 3: 
+                    System.out.println("Enter a number:");
+                    System.out.println(recursiveIsPrime(sc.nextInt(), 2) ? "Prime" : "Not prime"); 
+                    break;
                 case 4: 
                     System.out.println("Enter n:");
                     System.out.println(recursiveFactorial(sc.nextInt())); 
@@ -35,7 +57,7 @@ public class p1to10 {
                     break;
                 case 6:
                     System.out.println("Enter base and exponent:");
-                    System.out.println(power(sc.nextInt(), sc.nextInt())); 
+                    System.out.println(recursivePower(sc.nextInt(), sc.nextInt())); 
                     break;
                 case 7:
                     sc.nextLine();
@@ -45,7 +67,7 @@ public class p1to10 {
                 case 8:
                     sc.nextLine();
                     System.out.println("Enter string:");
-                    isFullDigits(sc.nextLine()); 
+                    System.out.println(recursiveIsFullDigits(sc.nextLine(), 0) ? "Yes" : "No"); 
                     break;
                 case 9:
                     System.out.println("Enter n and k:");
@@ -64,57 +86,30 @@ public class p1to10 {
     }
 
     // Exercise 1: O(n)
-    public static int minimum() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter array size:");
-        int n = sc.nextInt();
-        int[] array = new int[n];
-        int temp = Integer.MAX_VALUE;
-        
-        System.out.println("Enter " + n + " numbers:");
-        for (int i = 0; i < n; i++) {
-            array[i] = sc.nextInt();
-            if (array[i] < temp) {
-                temp = array[i];
-            }
+    public static int recursiveMinimum(int[] array, int index, int min) {
+        if (index == array.length) {
+            return min;
         }
-        
-        return temp;
+        return recursiveMinimum(array, index + 1, Math.min(min, array[index]));
     }
 
     // Exercise 2: O(n)
-    public static void avg() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter array size:");
-        int n = sc.nextInt();
-        int[] array = new int[n];
-        int sum = 0;
-
-        System.out.println("Enter " + n + " numbers:");
-        for (int i = 0; i < n; i++) {
-            array[i] = sc.nextInt();
-            sum += array[i];
+    public static int recursiveAverage(int[] array, int index, int sum) {
+        if (index == array.length) {
+            return sum;
         }
-
-        float average = (float) sum / n;
-        System.out.println(average);
+        return recursiveAverage(array, index + 1, sum + array[index]);
     }
 
     // Exercise 3: O(sqrt(n))
-    public static void isPrime() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter a number:");
-        int num = sc.nextInt();
-        int i = 2;
-        
-        for (i = 2; i <= Math.sqrt(num); i++) {
-            if (num % i == 0) {
-                break;
-            }
+    public static boolean recursiveIsPrime(int num, int divisor) {
+        if (divisor > Math.sqrt(num)) {
+            return true;
         }
-
-        if (i > Math.sqrt(num)) System.out.println("Prime");
-        else System.out.println("Not prime");
+        if (num % divisor == 0) {
+            return false;
+        }
+        return recursiveIsPrime(num, divisor + 1);
     }
 
     // Exercise 4: O(n)
@@ -133,14 +128,9 @@ public class p1to10 {
     }
 
     // Exercise 6: O(n)
-    public static int power(int a, int n) {
-        int res = 1;
+    public static int recursivePower(int a, int n) {
         if (n == 0) return 1;
-        while (n > 0) {
-            res *= a;
-            n -= 1;
-        }
-        return res;
+        return a * recursivePower(a, n - 1);
     }
 
     // Exercise 7: O(n!)
@@ -162,14 +152,11 @@ public class p1to10 {
     }
 
     // Exercise 8: O(n)
-    public static void isFullDigits(String s) {
-        for (int i = 0; i < s.length(); i++) {
-            if (!Character.isDigit(s.charAt(i))) {
-                System.out.println("No");
-                return;
-            }
+    public static boolean recursiveIsFullDigits(String s, int index) {
+        if (index == s.length()) {
+            return true;
         }
-        System.out.println("Yes");
+        return Character.isDigit(s.charAt(index)) && recursiveIsFullDigits(s, index + 1);
     }
 
     // Exercise 9: O(2^n)
